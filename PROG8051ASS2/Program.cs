@@ -68,6 +68,37 @@ class Player
     }
 }
 
+// Represents the game board
+class Board
+{
+    public Cell[,] Grid; // 2D array representing the grid of cells
+
+    public Board()
+    {
+        Grid = new Cell[6, 6];
+        InitializeBoard(); // Initializing the cells of the board
+    }
+
+    // Initializes the cells of the board with players, gems, obstacles, and empty spaces
+    private void InitializeBoard()
+    {
+        // putting "-" in empty spaces in the cells
+        for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < 6; j++)
+            {
+                Grid[i, j] = new Cell("-");
+            }
+        }
+
+        // Place players at opposite ends of each other
+        Grid[0, 0].Occupant = "P1"; // Player 1
+        Grid[5, 5].Occupant = "P2"; // Player 2
+    } 
+}
+
+        
+
 
 class Program
 {
