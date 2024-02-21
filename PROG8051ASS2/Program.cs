@@ -71,7 +71,7 @@ class Player
 // Represents the game board
 class Board
 {
-    public Cell[,] Grid; // 2D array representing the grid of cells
+    public Cell[,] Grid; // 2D array representation of the grid of cells
 
     public Board()
     {
@@ -94,10 +94,34 @@ class Board
         // Place players at opposite ends of each other
         Grid[0, 0].Occupant = "P1"; // Player 1
         Grid[5, 5].Occupant = "P2"; // Player 2
-    } 
-}
 
-        
+
+        // Placing gems in random positions
+        Random random = new Random();
+        for (int i = 0; i < 8; i++)
+        {
+            int gemX = random.Next(6);
+            int gemY = random.Next(6);
+            Grid[gemX, gemY].Occupant = "G";
+        }
+
+        // Place obstacles in random positions
+        for (int i = 0; i < 8; i++)
+        {
+            int obstacleX = random.Next(6);
+            int obstacleY = random.Next(6);
+            // Make sure not to overwrite players or gems
+            if (Grid[obstacleX, obstacleY].Occupant == "-")
+            {
+                Grid[obstacleX, obstacleY].Occupant = "O"; // Obstacles being placed in empty spaces only
+            }
+            else
+            {
+                i--;
+            }
+        }
+    }
+}
 
 
 class Program
