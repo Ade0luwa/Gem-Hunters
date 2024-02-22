@@ -121,6 +121,66 @@ class Board
             }
         }
     }
+
+    // Displays the current state of the board
+    public void Display()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < 6; j++)
+            {
+                Console.Write($"{Grid[i, j].Occupant} ");
+            }
+            Console.WriteLine();
+        }
+    }
+
+    // Checks if a move is valid for the given player and direction
+    public bool IsValidMove(Player player, char direction)
+    {
+        int newX = player.Position.X;
+        int newY = player.Position.Y;
+
+        switch (direction)
+        {
+            case 'U':
+                newY--;
+                break;
+
+            case 'D':
+                newY++;
+                break;
+
+            case 'L':
+                newX--;
+                break;
+
+            case 'R':
+                newX++;
+                break;
+        }
+
+        // Check if the new position is within bounds and not an obstacle
+        return newX >= 0 && newX < 6 && newY >= 0 && newY < 6 && Grid[newY, newX].Occupant != "O";
+    }
+
+    // Updates the position of a player on the board
+    public void UpdatePlayerPosition(Player player, Position previousPosition)
+    {
+        Grid[previousPosition.Y, previousPosition.X].Occupant = "-"; // Clear previous position
+        Grid[player.Position.Y, player.Position.X].Occupant = player.Name; // Update current position
+    }
+
+    // Handles the collection of gems by a player
+    public void CollectGem(Player player)
+    {
+        if (Grid[player.Position.Y, player.Position.X].Occupant == "G")
+        {
+            player.GemCount++; // Increment gem count
+            Grid[player.Position.Y, player.Position.X].Occupant = "-"; // Remove gem from board
+            Console.WriteLine($"Yayyyyyy {player.Name} has found a gem!");
+        }
+    }
 }
 
 
