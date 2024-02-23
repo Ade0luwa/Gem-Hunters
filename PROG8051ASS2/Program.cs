@@ -178,7 +178,99 @@ class Board
         {
             player.GemCount++; // Increment gem count
             Grid[player.Position.Y, player.Position.X].Occupant = "-"; // Remove gem from board
-            Console.WriteLine($"Yayyyyyy {player.Name} has found a gem!");
+            Console.WriteLine($"\nYayyyyyy {player.Name} has found a gem!");
+        }
+    }
+}
+
+// Represents the game logic and controls
+class Game
+{
+    public Board Board; // The game board
+    public Player Player1; // Player 1
+    public Player Player2; // Player 2
+    public int TotalTurns; // Total number of turns taken
+
+    // Constructor to initialize the game
+    public Game()
+    {
+        Board = new Board(); // Create the game board
+        Player1 = new Player("P1", new Position(0, 0)); // Create Player 1
+        Player2 = new Player("P2", new Position(5, 5)); // Create Player 2
+        TotalTurns = 0; // Initialize total turns
+    }
+
+    // Starts the game loop
+    public void Start()
+    {
+        while (!IsGameOver())
+        {
+            // Determine current player
+            Player currentPlayer = TotalTurns % 2 == 0 ? Player1 : Player2;
+            Position previousPosition = new Position(currentPlayer.Position.X, currentPlayer.Position.Y);
+
+            Console.Clear();
+            Board.Display();
+            Console.WriteLine($"Current turn: {currentPlayer.Name}");
+            Console.WriteLine($"Gems collected: {Player1.GemCount} (P1) - {Player2.GemCount} (P2)");
+            Console.WriteLine($"Number of turns: {Player1.Turns} (P1) - {Player2.Turns} (P2)");
+
+            ConsoleKeyInfo key = Console.ReadKey();
+            if (key.Key == ConsoleKey.U || key.Key == ConsoleKey.D || key.Key == ConsoleKey.L || key.Key == ConsoleKey.R)
+            {
+                char direction = char.ToUpper(key.KeyChar);
+
+                if (Board.IsValidMove(currentPlayer, direction))
+                {
+                    currentPlayer.Move(direction);
+                    Board.CollectGem(currentPlayer);
+                    Board.UpdatePlayerPosition(currentPlayer, previousPosition);
+                    TotalTurns++;
+                }
+                else
+                {
+                    Console.WriteLine("\nInvalid move. Try again.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nInvalid input. Use U, D, L, R keys to move.");
+            }
+
+            // Pause to allow players to see the current state before proceeding
+            Console.WriteLine("\nPress Enter to continue...");
+            Console.ReadLine();
+        }
+
+        AnnounceWinner();
+    }
+
+    // Checks if the game is over
+    public bool IsGameOver()
+    {
+        return TotalTurns >= 30; // Game ends after 30 turns
+    }
+
+    // Announces the winner of the game
+    public void AnnounceWinner()
+    {
+        Console.Clear();
+        Console.WriteLine("Game over!");
+
+        Console.WriteLine($"Gems collected: {Player1.GemCount} (P1) - {Player2.GemCount} (P2)");
+        Console.WriteLine($"Number of turns: {Player1.Turns} (P1) - {Player2.Turns} (P2)");
+
+        if (Player1.GemCount > Player2.GemCount)
+        {
+            Console.WriteLine("Player 1 (P1) wins!");
+        }
+        else if (Player2.GemCount > Player1.GemCount)
+        {
+            Console.WriteLine("Player 2 (P2) wins!");
+        }
+        else
+        {
+            Console.WriteLine("It's a tie!");
         }
     }
 }
@@ -186,8 +278,9 @@ class Board
 
 class Program
 {
-    public static void Main()
+    static void Main()
     {
-        
+        Game gemHunters = new Game(); // Create a new game instance
+        gemHunters.Start(); // Start the game
     }
 }
