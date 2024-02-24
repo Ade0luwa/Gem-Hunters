@@ -214,6 +214,7 @@ class Game
             Console.WriteLine($"Current turn: {currentPlayer.Name}");
             Console.WriteLine($"Gems collected: {Player1.GemCount} (P1) - {Player2.GemCount} (P2)");
             Console.WriteLine($"Number of turns: {Player1.Turns} (P1) - {Player2.Turns} (P2)");
+            Console.WriteLine("Enter 'U' to move up, 'D' to come down, 'L' to move left, 'R' to move right");
 
             ConsoleKeyInfo key = Console.ReadKey();
             if (key.Key == ConsoleKey.U || key.Key == ConsoleKey.D || key.Key == ConsoleKey.L || key.Key == ConsoleKey.R)
